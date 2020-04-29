@@ -1,0 +1,9 @@
+#! /bin/bash
+set -e
+set -x
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$DIR/common"
+DOCKER_ARGS="-p 8888:8888 --memory 10g"
+docker_run start-notebook.sh \
+    --config='/home/jovyan/.jupyter/jupyter_notebook_config.py'

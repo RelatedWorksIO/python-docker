@@ -1,0 +1,8 @@
+#! /bin/bash
+set -e
+set -x
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+source "$SCRIPT_DIR/common"
+docker build --tag $PROJECT_NAME -f docker/Dockerfile --build-arg ANALYTICS_CORE_DIR=$ANALYTICS_CORE_DIR .

@@ -1,0 +1,32 @@
+#! /bin/bash
+PROJECT_NAME=$(cat .project_name)
+CONTAINER_CODE_DIR=/home/jovyan/code
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# TODO make this smarter
+# If there's an analytics core directory, mount it on top of current directory.
+# This only exists because docker doesn't like symlinks
+if [[ -d "analytics-core" ]]; then
+    ANALYTICS_CORE_DIR="./analytics-core"
+    ANALYTICS_CORE_DIR_ABSOLUTE="$( cd $ANALYTICS_CORE_DIR >/dev/null 2>&1 && pwd )"
+    ANALYTICS_VOLUME_ARG="--volume $ANALYTICS_CORE_DIR_ABSOLUTE/relatedworks:$CONTAINER_CODE_DIR/relatedworks"
+fi
+
+if [[ -f "secrets/env" ]];
+then
+    SECRETS_ARG="--env-file secrets/env"
+fi
+
+function docker_run {
+    docker run \
+        $DOCKER_ARGS \
+        $SECRETS_ARG \
+        --env-file $SCRIPT_DIR/python_path_env \
+        -it --rm \
+        --volume $(pwd):$CONTAINER_CODE_DIR \
+        $ANALYTICS_VOLUME_ARG \
+        --workdir $CONTAINER_CODE_DIR \
+        $PROJECT_NAME \
+        $@
+}

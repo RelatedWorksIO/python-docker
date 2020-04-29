@@ -1,0 +1,9 @@
+#! /bin/bash
+set -e
+set -x
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$DIR/common"
+docker_run autoflake -r --in-place --remove-unused-variables .
+docker_run isort -rc .
+docker_run black .
