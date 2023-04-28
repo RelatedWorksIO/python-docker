@@ -21,4 +21,4 @@ PyAthena==1.6.1
 profilehooks==1.10.0
 yapf==0.25.0
 seaborn==0.9.0
-snowflake-connector-python==1.6.12
+snowflake-connector-python==2.8.3
